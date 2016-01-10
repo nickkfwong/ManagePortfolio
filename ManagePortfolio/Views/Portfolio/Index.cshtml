@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Portfolio";
+}
+
+<div class="container" ng-controller="portfolioController">
+    <!--Stock View-->
+    <div class="stock-view">
+        <button type="button" class="btn btn-default btn-sm" ng-click="getEquities()">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+        </button>
+        <div class="stock-header">
+            <table class="table">
+                <tbody>
+                    <tr class="stock-header-row">
+                        <td></td>
+                        <td>
+                            <small>shares</small>
+                        </td>
+                        <td>
+                            <small>value</small>
+                        </td>
+                        <td>
+                            <small>price</small>
+                        </td>
+                        <td>
+                            <small>avg price</small>
+                        </td>
+                        <td>
+                            <small>realized</small>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="stock-summary" ng-repeat-start="equity in equities">
+            <table class="table">
+                <tbody>
+                    <tr class="stock-summary-row">
+                        <td class="stock-code">
+                            <button type="button" class="btn btn-default" ng-click="isCollapsed = !isCollapsed">+</button><span>{{equity.Code}}</span>
+                            <span class="stock-code-name">{{equity.Name}}</span>
+                        </td>
+                        <td class="stock-share">
+                            <span>{{equity.Shares}}</span>
+                        </td>
+                        <td class="stock-value">
+                            <span>{{equity.TotalValue | currency}}</span>
+                            <span class="stock-bookprofit">({{equity.BookProfit | number:2}})</span>
+                        </td>
+                        <td class="stock-price">
+                            <span>{{equity.Price | currency}}</span>
+                        </td>
+                        <td class="stock-avgprice">
+                            <span>{{equity.AveragePrice | currency}}</span>
+                        </td>
+                        <td class="stock-realized">
+                            <span>{{equity.RealizedProfit | currency}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="collapse stock-detail" id="stock-detail-{{$index}}" uib-collapse="isCollapsed">
+            <table class="table">
+                <tbody>
+                    <tr class="stock-header-row">
+                        <td></td>
+                        <td>
+                            <small>shares</small>
+                        </td>
+                        <td>
+                            <small>buy</small>
+                        </td>
+                        <td>
+                            <small>sell</small>
+                        </td>
+                        <td>
+                            <small>date buy</small>
+                        </td>
+                        <td>
+                            <small>date sell</small>
+                        </td>
+                        <td>
+                            <small>realized</small>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="trs in equity.Transactions | orderBy:'State' | orderBy:'DateBuy'">
+                        <td></td>
+                        <td>
+                            <small>{{trs.Shares}}</small>
+                        </td>
+                        <td>
+                            <small>{{trs.PriceBuy | currency}}</small>
+                        </td>
+                        <td>
+                            <small>{{trs.PriceSell | currency}}</small>
+                        </td>
+                        <td>
+                            <small>{{trs.DateBuy | date:'yyyy-MM-dd'}}</small>
+                        </td>
+                        <td>
+                            <small>{{trs.DateSell | date:'yyyy-MM-dd'}}</small>
+                        </td>
+                        <td>
+                            <small>{{trs.RealizedProfit | currency}}</small>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-repeat-end></div>
+    </div>
+</div>
